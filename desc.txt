@@ -1,8 +1,0 @@
-Vocab size src: 30000
-Vocab size tgt: 30000
-Min frequency: 2
-Min len token: 6
-Max len token: 100
-Type token src: wordpiece
-Type token tgt: wordpiece
-Special tokens: ['<s>', '<pad>', '</s>', '<unk>', '<mask>', '<cls>', '<sep>']
