@@ -1,6 +1,12 @@
 import random
 import numpy as np
 
+# const variable
+TOKEN_MASKING = 'token_masking'
+TOKEN_DELETION = 'token_deletion'
+DOCUMENT_ROTATION = 'document_rotation'
+TEXT_INFILLING = 'text_infilling'
+
 def random_pos(length, ratio=0.15):
     length_pos = int(length * ratio)
     pos = random.sample(range(length), length_pos)
@@ -38,7 +44,7 @@ def token_deletion(text, ratio=0.15):
     masked_text = ' '.join(masked_words)
     return masked_text.strip()
 
-def document_rotation(text):
+def document_rotation(text, ratio=None):
     words = text.split()
     length = len(words)
     pos = random.randint(0, length-1)
@@ -79,4 +85,8 @@ __all__ = [
     "token_deletion",
     "document_rotation",
     "text_infilling",
+    "TOKEN_MASKING",
+    "TOKEN_DELETION",
+    "DOCUMENT_ROTATION",
+    "TEXT_INFILLING",
 ]
