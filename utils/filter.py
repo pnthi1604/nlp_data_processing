@@ -4,7 +4,7 @@ def condition_length_with_tokenizer(
     tokenizer,
     text,
     min_len_token=6,
-    max_len_token=100,
+    max_len_token=96,
 ):
     text = tokenizer.encode(text)
     if len(text.ids) < min_len_token:
@@ -18,7 +18,15 @@ def condition_non_number_character(text):
         return False
     return True
 
+def condition_min_max_length(text, min_len=6, max_len=96):
+    if len(text.split()) < min_len:
+        return False
+    if len(text.split()) > max_len:
+        return False
+    return True
+
 __all__ = [
     "condition_length_with_tokenizer",
     "condition_non_number_character",
+    "condition_min_max_length",
 ]
