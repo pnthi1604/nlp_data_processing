@@ -38,7 +38,14 @@ def token_deletion(text, ratio=0.15):
     masked_text = ' '.join(masked_words)
     return masked_text.strip()
 
-def document_rotation
+def document_rotation(text):
+    words = text.split()
+    length = len(words)
+    pos = random.randint(0, length-1)
+
+    rotated_words = words[pos:] + words[:pos]
+    rotated_text = ' '.join(rotated_words)
+    return rotated_text.strip()
 
 def text_infilling(text, lambd=3, ratio=0.15):
     words = text.split()
@@ -66,3 +73,10 @@ def text_infilling(text, lambd=3, ratio=0.15):
 
     masked_text = ' '.join(masked_words)
     return masked_text
+
+__all__ = [
+    "token_masking",
+    "token_deletion",
+    "document_rotation",
+    "text_infilling",
+]
