@@ -3,9 +3,11 @@ import pandas as pd
 def condition_length_with_tokenizer(
     tokenizer,
     text,
-    min_len_token=6,
-    max_len_token=96,
+    min_len_token,
+    max_len_token,
 ):
+    if type(text) != str:
+        return False
     text = tokenizer.encode(text)
     if len(text.ids) < min_len_token:
         return False
@@ -14,11 +16,15 @@ def condition_length_with_tokenizer(
     return True
 
 def condition_non_number_character(text):
+    if type(text) != str:
+        return False
     if any(char.isdigit() for char in text):
         return False
     return True
 
-def condition_min_max_length(text, min_len=6, max_len=96):
+def condition_min_max_length(text, min_len, max_len):
+    if type(text) != str:
+        return False
     if len(text.split()) < min_len:
         return False
     if len(text.split()) > max_len:

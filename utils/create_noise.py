@@ -6,6 +6,7 @@ TOKEN_MASKING = 'token_masking'
 TOKEN_DELETION = 'token_deletion'
 DOCUMENT_ROTATION = 'document_rotation'
 TEXT_INFILLING = 'text_infilling'
+SENTENCE_PERMUTATION = 'sentence_permutation'
 
 def random_pos(length, ratio=0.15):
     length_pos = int(length * ratio)
@@ -53,6 +54,13 @@ def document_rotation(text, ratio=None):
     rotated_text = ' '.join(rotated_words)
     return rotated_text.strip()
 
+def sentence_permutation(text, ratio=None):
+    sentences = text.split('.')
+    sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+    random.shuffle(sentences)
+    permuted_text = '. '.join(sentences)
+    return permuted_text.strip()
+
 def text_infilling(text, lambd=3, ratio=0.15):
     words = text.split()
     length = len(words)
@@ -85,8 +93,10 @@ __all__ = [
     "token_deletion",
     "document_rotation",
     "text_infilling",
+    "sentence_permutation",
     "TOKEN_MASKING",
     "TOKEN_DELETION",
     "DOCUMENT_ROTATION",
     "TEXT_INFILLING",
+    "SENTENCE_PERMUTATION",
 ]
