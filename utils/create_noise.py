@@ -67,16 +67,18 @@ def text_infilling(text, lambd=3, ratio=0.15):
     num_masks = max(1, int(length * ratio))
 
     mask_positions = []
-    current_length = 0
+    cur_pos = 0
+    sum_length = 0
 
-    while current_length < length - 1 and len(mask_positions) < num_masks:
-        mask_length = min(length - current_length, max(1, int(np.random.poisson(lambd))))
-        if length - current_length - mask_length < 1:
+    while cur_pos < length - 1 and sum_length <= num_masks:
+        mask_length = min(length - cur_pos, max(1, int(np.random.poisson(lambd))))
+        if length - cur_pos - mask_length < 1:
             break
-        start = random.randint(current_length + 1, length - mask_length)
+        start = random.randint(cur_pos + 1, length - mask_length)
         end = start + mask_length
         mask_positions.append((start, end))
-        current_length = end
+        sum_length += mask_length
+        cur_pos = end
 
     masked_words = words.copy()
     for start, end in mask_positions:

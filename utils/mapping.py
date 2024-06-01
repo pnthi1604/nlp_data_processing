@@ -16,16 +16,21 @@ def separate_text_with_min_max_len(text, min_len, max_len):
     sentences = []
     i = 0
     while i < len(text):
-        sent = text[i]
-        for j in range(i + 1, len(text)):
-            if len(sent.split()) + len(text[j].split()) <= max_len:
-                sent = sent.strip() + ' ' + text[j].strip() + ' . '
+        sents = [text[i]]
+        sum_len = len(text[i].split())
+        j = i + 1
+        i = j
+        while j < len(text):
+            if sum_len + len(text[j].split()) <= max_len:
+                sents.append(text[j])
+                sum_len += len(text[j].split())
+                j += 1
+                i = j
             else:
-                i = j - 1
+                i = j
                 break
-        i += 1
-        if len(sent.split()) >= min_len:
-            sentences.append(sent.strip())
+        if sum_len >= min_len:
+            sentences.append(' '.join(sents))
     return sentences
 
 def separate_word(text):
@@ -34,9 +39,9 @@ def separate_word(text):
 
 def contraction(text, lang="vi"):
     text = BeautifulSoup(text, "html.parser").get_text()
+    text.replace(" '", "'")
     if lang == "en":
         text = contractions.fix(text)
-        text.replace(" '", "'")
     return text
 
 def normalize_punctuation_spacing(text):
