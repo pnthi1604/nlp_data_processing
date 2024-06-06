@@ -74,8 +74,10 @@ def text_infilling(text, lambd=3, ratio=0.15):
         mask_length = min(length - cur_pos, max(1, int(np.random.poisson(lambd))))
         if length - cur_pos - mask_length < 1:
             break
-        start = random.randint(cur_pos + 1, length - mask_length)
+        start = random.randint(cur_pos + 1, max(cur_pos + 1, length - (num_masks - sum_length) - mask_length))
         end = start + mask_length
+        if end > length:
+            break
         mask_positions.append((start, end))
         sum_length += mask_length
         cur_pos = end
