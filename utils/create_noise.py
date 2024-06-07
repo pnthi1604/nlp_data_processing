@@ -97,7 +97,7 @@ def text_infilling(text, lambd=3, ratio=0.15):
             break
         mask_positions.append((start, end))
         sum_length += mask_length
-        cur_pos = end + 1
+        cur_pos = mask_positions[-1][1] + 2
 
     masked_words = words.copy()
     for start, end in mask_positions:
