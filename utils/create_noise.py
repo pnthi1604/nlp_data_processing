@@ -109,7 +109,7 @@ def text_infilling(text, lambd=3, ratio=0.15):
         masked_words = masked_words[:start] + ['<mask>'] + masked_words[start:]
 
     masked_text = ' '.join(masked_words)
-    return masked_text
+    return masked_text.strip()
 
 __all__ = [
     "token_masking",
