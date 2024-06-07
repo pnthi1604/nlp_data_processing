@@ -78,8 +78,13 @@ def text_infilling(text, lambd=3, ratio=0.15):
     cur_pos = 0
     sum_length = 0
 
+    queue_positions = []
     while length - (num_masks - sum_length) > 0 and sum_length <= num_masks and length - cur_pos > 0:
         mask_length = min(length - cur_pos, max(1, int(np.random.poisson(lambd))))
+        if mask_length == 0:
+            queue_positions.append(cur_pos + len(queue_positions))
+            cur_pos += 2
+            continue
         if  length - (num_masks - sum_length + mask_length) < cur_pos + 1:
             break
         start = multi_random_choice_min(
@@ -92,16 +97,14 @@ def text_infilling(text, lambd=3, ratio=0.15):
             break
         mask_positions.append((start, end))
         sum_length += mask_length
-        cur_pos = end
+        cur_pos = end + 1
 
-    queue_positions = []
     masked_words = words.copy()
     for start, end in mask_positions:
         if start >= end:
-            queue_positions.append(start + len(queue_positions))
             continue
         masked_words[start:end] = ['<mask>']
-        
+
     for start in queue_positions:
         masked_words = masked_words[:start] + ['<mask>'] + masked_words[start:]
 
