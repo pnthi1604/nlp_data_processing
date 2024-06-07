@@ -84,6 +84,7 @@ def text_infilling(text, lambd=3, ratio=0.15):
             masked_words = masked_words[:cur_pos] + ['<mask>'] + masked_words[cur_pos:]
             cur_pos += 2
             length += 1
+            sum_length += 1
             continue
         if  length - (num_masks - sum_length + mask_length) < cur_pos + 1:
             break
