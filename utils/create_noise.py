@@ -61,6 +61,14 @@ def sentence_permutation(text, ratio=None):
     permuted_text = '. '.join(sentences)
     return permuted_text.strip()
 
+def multi_random_choice_min(left, right, num=10):
+    min_choice = right
+    while num > 0:
+        choice = random.randint(left, right)
+        min_choice = min(min_choice, choice)
+        num -= 1
+    return min_choice
+
 def text_infilling(text, lambd=3, ratio=0.15):
     words = text.split()
     length = len(words)
@@ -70,11 +78,15 @@ def text_infilling(text, lambd=3, ratio=0.15):
     cur_pos = 0
     sum_length = 0
 
-    while cur_pos < length - 1 and sum_length <= num_masks:
+    while length - (num_masks - sum_length) > 0 and sum_length <= num_masks and length - cur_pos > 0:
         mask_length = min(length - cur_pos, max(1, int(np.random.poisson(lambd))))
-        if length - cur_pos - mask_length < 1:
+        if  length - (num_masks - sum_length + mask_length) < cur_pos + 1:
             break
-        start = random.randint(cur_pos + 1, max(cur_pos + 1, length - (num_masks - sum_length) - mask_length))
+        start = multi_random_choice_min(
+            left=cur_pos + 1,
+            right=length - (num_masks - sum_length + mask_length), 
+            num=10
+        )
         end = start + mask_length
         if end > length:
             break
@@ -82,12 +94,16 @@ def text_infilling(text, lambd=3, ratio=0.15):
         sum_length += mask_length
         cur_pos = end
 
+    queue_positions = []
     masked_words = words.copy()
     for start, end in mask_positions:
         if start >= end:
-            masked_words = masked_words[:start] + ['<mask>'] + masked_words[start:]
+            queue_positions.append(start + len(queue_positions))
             continue
         masked_words[start:end] = ['<mask>']
+        
+    for start in queue_positions:
+        masked_words = masked_words[:start] + ['<mask>'] + masked_words[start:]
 
     masked_text = ' '.join(masked_words)
     return masked_text
