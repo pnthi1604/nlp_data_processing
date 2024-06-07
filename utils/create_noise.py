@@ -103,7 +103,7 @@ def text_infilling(text, lambd=3, ratio=0.15):
     for start, end in mask_positions:
         if start >= end:
             continue
-        masked_words[start:end] = ['<mask>']
+        masked_words = masked_words[:start] + ['<mask>'] + masked_words[end:]
 
     for start in queue_positions:
         masked_words = masked_words[:start] + ['<mask>'] + masked_words[start:]
