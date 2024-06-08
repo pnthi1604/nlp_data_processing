@@ -14,16 +14,19 @@ def random_pos(length, ratio=0.15):
     return pos
 
 def token_masking(text, ratio=0.15):
-    tokens = text.split()
-    num_tokens = len(tokens)
-    num_tokens_to_mask = int(num_tokens * ratio)
+    length_text = len(text.split())
+    num_masked_token = int(length_text * ratio)
+
+    masked_arr = [1] * num_masked_token + [0] * (length_text - num_masked_token)
+    random.shuffle(masked_arr)
+
+    words = text.split()
+    for i in range(length_text):
+        if masked_arr[i] == 1:
+            words[i] = '<mask>'
     
-    idx = random.sample(range(num_tokens), num_tokens_to_mask)
-    
-    mask="<mask>"
-    masked_text = ' '.join(mask if i in idx else token for i, token in enumerate(tokens))
-    
-    return masked_text
+    masked_text = ' '.join(words)
+    return masked_text.strip()
 
 def token_deletion(text, ratio=0.15):
     words = text.split()
