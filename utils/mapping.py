@@ -40,8 +40,7 @@ def separate_word(text):
 def contraction(text, lang="vi"):
     text = BeautifulSoup(text, "html.parser").get_text()
     text.replace(" '", "'")
-    if lang == "en":
-        text = contractions.fix(text)
+    text = contractions.fix(text)
     return text
 
 def normalize_punctuation_spacing(text):
