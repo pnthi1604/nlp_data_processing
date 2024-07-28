@@ -45,11 +45,11 @@ def contraction(text, lang="vi"):
 
 def pre_en_lang(
     text: str,
-    remove_stop_words: bool=False,
 ):
     text = text.lower()
     text = contractions.fix(text)
     text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+    text = text.replace("\\", "")
     return normalize_punctuation_spacing(text)
 
 def normalize_punctuation_spacing(text):
