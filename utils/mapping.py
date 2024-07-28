@@ -43,6 +43,15 @@ def contraction(text, lang="vi"):
     text = contractions.fix(text)
     return text
 
+def pre_en_lang(
+    text: str,
+    remove_stop_words: bool=False,
+):
+    text = text.lower()
+    text = contractions.fix(text)
+    text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+    return normalize_punctuation_spacing(text)
+
 def normalize_punctuation_spacing(text):
     text = re.sub(r'\n', ' ', text)
     text = re.sub(r'([.,!?;(){}\[\]])', r' \1 ', text)
@@ -57,6 +66,7 @@ __all__ = [
     'separate_text',
     'separate_word',
     'contraction',
+    'pre_en_lang',
     'normalize_punctuation_spacing',
     'word_tokenize_vn',
     'separate_text_with_min_max_len',
